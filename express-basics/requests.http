@@ -51,3 +51,43 @@ Content-Type: application/json
   "position": "Backend Developer",
   "salary": "85000"
 }
+### id válido + body válido --> 200
+PUT http://localhost:3000/employees/1
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### id inexistente --> 404
+PUT http://localhost:3000/employees/999
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### id inválido --> 400
+PUT http://localhost:3000/employees/abc
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### body inválido --> 400
+PUT http://localhost:3000/employees/1
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": "100000"
+}

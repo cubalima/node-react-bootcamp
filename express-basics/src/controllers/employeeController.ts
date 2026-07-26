@@ -50,3 +50,24 @@ function isValidEmployee(data: unknown): data is CreateEmployee {
         typeof employeeData.salary === "number";
 }
 
+export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: Response): void => {
+    const idNumber: number = parseInt(req.params.id, 10);
+
+    if (isNaN(idNumber)) {
+        res.status(400).json({ message: "Invalid employee ID" });
+        return;
+    }
+
+    const employee = req.body;
+    if (!isValidEmployee(employee)) {
+        res.status(400).json({ message: "Invalid employee data" });
+        return;
+    }
+
+    const updatedEmployee = employeeService.update(idNumber, employee);
+    if (updatedEmployee) {
+        res.json(updatedEmployee);
+    } else {
+        res.status(404).json({ message: "Employee not found" });
+    }
+};
