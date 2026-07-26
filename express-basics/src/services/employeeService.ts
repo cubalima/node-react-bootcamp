@@ -44,6 +44,15 @@ class EmployeeService {
         employees[employeeIndex] = updatedEmployeeData;
         return updatedEmployeeData;
     }
+
+    delete(id: number): boolean {
+        const employeeIndex = employees.findIndex(emp => emp.id === id);
+        if (employeeIndex === -1) {
+            return false;
+        }
+        employees.splice(employeeIndex, 1);
+        return true;
+    }
 }
 
 export default EmployeeService;

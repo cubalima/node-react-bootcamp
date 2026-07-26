@@ -71,3 +71,19 @@ export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: R
         res.status(404).json({ message: "Employee not found" });
     }
 };
+
+export const deleteEmployee = (req: Request<EmployeeParams>, res: Response): void => {
+    const idNumber: number = parseInt(req.params.id, 10);
+
+    if (isNaN(idNumber)) {
+        res.status(400).json({ message: "Invalid employee ID" });
+        return;
+    }
+
+    const isDeleted = employeeService.delete(idNumber);
+    if (isDeleted) {
+        res.status(204).send();
+    } else {
+        res.status(404).json({ message: "Employee not found" });
+    }
+};
