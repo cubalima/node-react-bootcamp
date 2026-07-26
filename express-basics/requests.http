@@ -1,0 +1,7 @@
+GET http://localhost:3000/employees
+###
+GET http://localhost:3000/employees/1
+###
+GET http://localhost:3000/employees/999
+###
+GET http://localhost:3000/employees/abc

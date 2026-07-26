@@ -12,6 +12,10 @@ class EmployeeService {
     getAll(): Employee[] {
         return employees;
     }
+
+    getById(id: number): Employee | undefined {
+        return employees.find(employee => employee.id === id);
+    }
 }
 
 export default EmployeeService;
