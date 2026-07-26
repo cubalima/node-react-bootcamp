@@ -24,6 +24,17 @@ Content-Type: application/json
   "position": "Backend Developer",
   "salary": 85000
 }
+### invalid employee - field not allowed --> 400
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "department": "Engineering",
+  "salary": 85000
+}
 ### invalid employee without required field --> 400
 POST http://localhost:3000/employees
 Content-Type: application/json
@@ -92,6 +103,18 @@ Content-Type: application/json
   "department": "Engineering",
   "salary": "100000"
 }
+### body con ID --> 400
+PUT http://localhost:3000/employees/1
+Content-Type: application/json
+
+{
+    "id": 999,
+    "name": "Ana",
+    "position": "Senior Backend Developer",
+    "department": "Engineering",
+    "salary": 100000
+}
+
 ###
 
 ### id válido --> 204

@@ -45,6 +45,10 @@ function isValidEmployee(data: unknown): data is CreateEmployee {
 
     const employeeData = data as Record<string, unknown>;
 
+    if ("id" in employeeData) {
+        return false; // ID should not be provided when creating a new employee
+    }
+
     return typeof employeeData.name === "string" &&
         typeof employeeData.position === "string" &&
         typeof employeeData.salary === "number" && 
