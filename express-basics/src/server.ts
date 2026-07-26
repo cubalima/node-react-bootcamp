@@ -1,5 +1,5 @@
 import express from "express";
-import employeeRoutes from "./routes/employees";
+import employeeRoutes from "./routes/employees.js";
 
 const app = express();
 const port = 3000;
