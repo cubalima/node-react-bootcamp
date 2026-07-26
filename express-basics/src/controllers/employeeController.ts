@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import EmployeeService from "../services/employeeService.js";
-import { Employee } from "../models/employee.js";
+import { CreateEmployee, Employee } from "../models/employee.js";
 
 const employeeService = new EmployeeService();
 interface EmployeeParams {
@@ -27,3 +27,26 @@ export const getEmployeeById = (req: Request<EmployeeParams>, res: Response): vo
         res.status(404).json({ message: "Employee not found" });
     }
 };
+
+export const createEmployee = (req: Request<{}, {}, unknown>, res: Response): void => {
+    const employee = req.body;
+    if (!isValidEmployee(employee)) {
+        res.status(400).json({ message: "Missing required fields" });
+        return;
+    }
+    const newEmployee: Employee = employeeService.create(employee);
+    res.status(201).json(newEmployee);
+}
+
+function isValidEmployee(data: unknown): data is CreateEmployee {
+    if (typeof data !== "object" || data === null) {
+        return false;
+    }
+
+    const employeeData = data as Record<string, unknown>;
+
+    return typeof employeeData.name === "string" &&
+        typeof employeeData.position === "string" &&
+        typeof employeeData.salary === "number";
+}
+

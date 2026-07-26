@@ -5,3 +5,49 @@ GET http://localhost:3000/employees/1
 GET http://localhost:3000/employees/999
 ###
 GET http://localhost:3000/employees/abc
+###
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "department": "Engineering",
+  "salary": 85000
+}
+###
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "salary": 85000
+}
+###
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "position": "Backend Developer",
+  "department": "Engineering",
+  "salary": 85000
+}
+###
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "department": "Engineering",
+  "salary": 85000
+}
+###
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "salary": "85000"
+}

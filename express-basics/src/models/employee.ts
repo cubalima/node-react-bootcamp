@@ -5,3 +5,5 @@ export interface Employee {
     department?: string;
     salary: number;
 }
+
+export type CreateEmployee = Omit<Employee, "id">;

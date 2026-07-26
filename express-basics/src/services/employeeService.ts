@@ -1,4 +1,4 @@
-import { Employee } from "../models/employee.js";
+import { CreateEmployee, Employee } from "../models/employee.js";
 const employees: Employee[] = [
     {
         id: 1,
@@ -15,6 +15,19 @@ class EmployeeService {
 
     getById(id: number): Employee | undefined {
         return employees.find(employee => employee.id === id);
+    }
+
+    create(employee: CreateEmployee): Employee {
+        const newEmployee = { ...employee, id: this.newId() };
+        employees.push(newEmployee);
+        return newEmployee;
+    }
+
+    private newId(): number {
+        if (employees.length === 0) {
+            return 1;
+        }
+        return Math.max(...employees.map(e => e.id)) + 1;
     }
 }
 
