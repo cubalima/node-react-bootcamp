@@ -13,9 +13,9 @@ export const getAllEmployees = (req: Request, res: Response): void => {
 };
 
 export const getEmployeeById = (req: Request<EmployeeParams>, res: Response): void => {
-    const idNumber: number = parseInt(req.params.id, 10);
+    const idNumber = Number(req.params.id);
 
-    if (isNaN(idNumber)) {
+    if (!Number.isInteger(idNumber)) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }

@@ -1,10 +1,12 @@
 GET http://localhost:3000/employees
-###
+### valid employee ID --> 200
 GET http://localhost:3000/employees/1
-###
+### employee not found --> 404
 GET http://localhost:3000/employees/999
-###
+### invalid employee ID --> 400
 GET http://localhost:3000/employees/abc
+### invalid employee ID --> 400
+GET http://localhost:3000/employees/1abc
 ### valid employee --> 201
 POST http://localhost:3000/employees
 Content-Type: application/json
