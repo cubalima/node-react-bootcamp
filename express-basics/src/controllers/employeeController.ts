@@ -31,7 +31,7 @@ export const getEmployeeById = (req: Request<EmployeeParams>, res: Response): vo
 export const createEmployee = (req: Request<{}, {}, unknown>, res: Response): void => {
     const employee = req.body;
     if (!isValidEmployee(employee)) {
-        res.status(400).json({ message: "Missing required fields" });
+        res.status(400).json({ message: "Missing required fields or invalid data" });
         return;
     }
     const newEmployee: Employee = employeeService.create(employee);
@@ -47,7 +47,8 @@ function isValidEmployee(data: unknown): data is CreateEmployee {
 
     return typeof employeeData.name === "string" &&
         typeof employeeData.position === "string" &&
-        typeof employeeData.salary === "number";
+        typeof employeeData.salary === "number" && 
+        (typeof employeeData.department === "string" || employeeData.department === undefined);
 }
 
 export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: Response): void => {

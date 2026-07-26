@@ -5,7 +5,7 @@ GET http://localhost:3000/employees/1
 GET http://localhost:3000/employees/999
 ###
 GET http://localhost:3000/employees/abc
-###
+### valid employee --> 201
 POST http://localhost:3000/employees
 Content-Type: application/json
 
@@ -15,7 +15,7 @@ Content-Type: application/json
   "department": "Engineering",
   "salary": 85000
 }
-###
+### valid employee without optional field --> 201
 POST http://localhost:3000/employees
 Content-Type: application/json
 
@@ -24,7 +24,7 @@ Content-Type: application/json
   "position": "Backend Developer",
   "salary": 85000
 }
-###
+### invalid employee without required field --> 400
 POST http://localhost:3000/employees
 Content-Type: application/json
 
@@ -33,16 +33,17 @@ Content-Type: application/json
   "department": "Engineering",
   "salary": 85000
 }
-###
+### invalid employee with wrong type --> 400
 POST http://localhost:3000/employees
 Content-Type: application/json
 
 {
   "name": "Carlos",
-  "department": "Engineering",
+  "position": "Backend Developer",
+  "department": 1,
   "salary": 85000
 }
-###
+### invalid employee with wrong type --> 400
 POST http://localhost:3000/employees
 Content-Type: application/json
 
