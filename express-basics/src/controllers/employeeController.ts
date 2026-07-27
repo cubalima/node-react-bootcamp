@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import EmployeeService from "../services/employeeService.js";
 import { CreateEmployee, Employee } from "../models/employee.js";
+import { ParsedQs } from "qs";
 
 const employeeService = new EmployeeService();
 interface EmployeeParams {
@@ -13,9 +14,9 @@ export const getAllEmployees = (req: Request, res: Response): void => {
 };
 
 export const getEmployeeById = (req: Request<EmployeeParams>, res: Response): void => {
-    const idNumber = Number(req.params.id);
+    const idNumber = parseEmployeeId(req.params.id);
 
-    if (!Number.isInteger(idNumber)) {
+    if (!idNumber) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }
@@ -56,9 +57,9 @@ function isValidEmployee(data: unknown): data is CreateEmployee {
 }
 
 export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: Response): void => {
-    const idNumber = Number(req.params.id);
+    const idNumber = parseEmployeeId(req.params.id);
 
-    if (!Number.isInteger(idNumber)) {
+    if (!idNumber) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }
@@ -78,9 +79,9 @@ export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: R
 };
 
 export const deleteEmployee = (req: Request<EmployeeParams>, res: Response): void => {
-    const idNumber = Number(req.params.id);
+    const idNumber = parseEmployeeId(req.params.id);
 
-    if (!Number.isInteger(idNumber)) {
+    if (!idNumber) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }
@@ -92,3 +93,9 @@ export const deleteEmployee = (req: Request<EmployeeParams>, res: Response): voi
         res.status(404).json({ message: "Employee not found" });
     }
 };
+
+function parseEmployeeId(idParam: string): number | undefined {
+    const idNumber = Number(idParam);
+    return Number.isInteger(idNumber) ? idNumber : undefined;
+}
+
