@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import EmployeeService from "../services/employeeService.js";
-import { CreateEmployee, Employee } from "../models/employee.js";
+import { Employee } from "../models/employee.js";
+import { createEmployeeSchema } from "../schemas/employeeSchema.js";
 
 const employeeService = new EmployeeService();
 interface EmployeeParams {
@@ -29,47 +30,29 @@ export const getEmployeeById = (req: Request<EmployeeParams>, res: Response): vo
 };
 
 export const createEmployee = (req: Request<{}, {}, unknown>, res: Response): void => {
-    const employee = req.body;
-    if (!isValidEmployee(employee)) {
-        res.status(400).json({ message: "Missing required fields or invalid data" });
+    const result = createEmployeeSchema.safeParse(req.body);
+    if (!result.success) {
+        res.status(400).json({ message: "Invalid employee data" });
         return;
     }
-    const newEmployee: Employee = employeeService.create(employee);
+    const newEmployee: Employee = employeeService.create(result.data);
     res.status(201).json(newEmployee);
-}
-
-function isValidEmployee(data: unknown): data is CreateEmployee {
-    if (typeof data !== "object" || data === null) {
-        return false;
-    }
-
-    const employeeData = data as Record<string, unknown>;
-
-    if ("id" in employeeData) {
-        return false; // ID should not be provided when creating a new employee
-    }
-
-    return typeof employeeData.name === "string" &&
-        typeof employeeData.position === "string" &&
-        typeof employeeData.salary === "number" && 
-        (typeof employeeData.department === "string" || employeeData.department === undefined);
 }
 
 export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: Response): void => {
     const idNumber = parseEmployeeId(req.params.id);
-
     if (!idNumber) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }
 
-    const employee = req.body;
-    if (!isValidEmployee(employee)) {
+    const result = createEmployeeSchema.safeParse(req.body);
+    if (!result.success) {
         res.status(400).json({ message: "Invalid employee data" });
         return;
     }
 
-    const updatedEmployee = employeeService.update(idNumber, employee);
+    const updatedEmployee = employeeService.update(idNumber, result.data);
     if (updatedEmployee) {
         res.json(updatedEmployee);
     } else {
