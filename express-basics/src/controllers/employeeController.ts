@@ -95,7 +95,9 @@ export const deleteEmployee = (req: Request<EmployeeParams>, res: Response): voi
 };
 
 function parseEmployeeId(idParam: string): number | undefined {
-    const idNumber = Number(idParam);
-    return Number.isInteger(idNumber) ? idNumber : undefined;
+    if (!/^[1-9]\d*$/.test(idParam)) {
+        return undefined;
+    }
+    return Number(idParam);
 }
 

@@ -146,3 +146,24 @@ DELETE http://localhost:3000/employees/abc
 
 ### invalid id --> 400
 DELETE http://localhost:3000/employees/1abc
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/1.5
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/-1
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/1e2
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/0x10
+
