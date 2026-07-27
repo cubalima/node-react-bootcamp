@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import EmployeeService from "../services/employeeService.js";
 import { CreateEmployee, Employee } from "../models/employee.js";
-import { ParsedQs } from "qs";
 
 const employeeService = new EmployeeService();
 interface EmployeeParams {
