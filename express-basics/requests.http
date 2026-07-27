@@ -1,0 +1,169 @@
+GET http://localhost:3000/employees
+### valid employee ID --> 200
+GET http://localhost:3000/employees/1
+### employee not found --> 404
+GET http://localhost:3000/employees/999
+### invalid employee ID --> 400
+GET http://localhost:3000/employees/abc
+### invalid employee ID --> 400
+GET http://localhost:3000/employees/1abc
+### valid employee --> 201
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "department": "Engineering",
+  "salary": 85000
+}
+### valid employee without optional field --> 201
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "salary": 85000
+}
+### invalid employee - field not allowed --> 400
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "department": "Engineering",
+  "salary": 85000
+}
+### invalid employee without required field --> 400
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "position": "Backend Developer",
+  "department": "Engineering",
+  "salary": 85000
+}
+### invalid employee with wrong type --> 400
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "department": 1,
+  "salary": 85000
+}
+### invalid employee with wrong type --> 400
+POST http://localhost:3000/employees
+Content-Type: application/json
+
+{
+  "name": "Carlos",
+  "position": "Backend Developer",
+  "salary": "85000"
+}
+### id válido + body válido --> 200
+PUT http://localhost:3000/employees/1
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### id inexistente --> 404
+PUT http://localhost:3000/employees/999
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### id inválido --> 400
+PUT http://localhost:3000/employees/abc
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### id inválido --> 400
+PUT http://localhost:3000/employees/1abc
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
+### body inválido --> 400
+PUT http://localhost:3000/employees/1
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": "100000"
+}
+### body con ID --> 400
+PUT http://localhost:3000/employees/1
+Content-Type: application/json
+
+{
+    "id": 999,
+    "name": "Ana",
+    "position": "Senior Backend Developer",
+    "department": "Engineering",
+    "salary": 100000
+}
+
+###
+
+### id válido --> 204
+DELETE http://localhost:3000/employees/1
+
+###
+
+### not found --> 404
+DELETE http://localhost:3000/employees/999
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/abc
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/1abc
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/1.5
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/-1
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/1e2
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/0x10
+
