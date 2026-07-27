@@ -56,9 +56,9 @@ function isValidEmployee(data: unknown): data is CreateEmployee {
 }
 
 export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: Response): void => {
-    const idNumber: number = parseInt(req.params.id, 10);
+    const idNumber = Number(req.params.id);
 
-    if (isNaN(idNumber)) {
+    if (!Number.isInteger(idNumber)) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }
@@ -78,9 +78,9 @@ export const updateEmployee = (req: Request<EmployeeParams, {}, unknown>, res: R
 };
 
 export const deleteEmployee = (req: Request<EmployeeParams>, res: Response): void => {
-    const idNumber: number = parseInt(req.params.id, 10);
+    const idNumber = Number(req.params.id);
 
-    if (isNaN(idNumber)) {
+    if (!Number.isInteger(idNumber)) {
         res.status(400).json({ message: "Invalid employee ID" });
         return;
     }

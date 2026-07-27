@@ -95,6 +95,16 @@ Content-Type: application/json
   "department": "Engineering",
   "salary": 100000
 }
+### id inválido --> 400
+PUT http://localhost:3000/employees/1abc
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "position": "Senior Backend Developer",
+  "department": "Engineering",
+  "salary": 100000
+}
 ### body inválido --> 400
 PUT http://localhost:3000/employees/1
 Content-Type: application/json
@@ -131,3 +141,8 @@ DELETE http://localhost:3000/employees/999
 
 ### invalid id --> 400
 DELETE http://localhost:3000/employees/abc
+
+###
+
+### invalid id --> 400
+DELETE http://localhost:3000/employees/1abc
