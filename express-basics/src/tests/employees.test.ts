@@ -11,3 +11,21 @@ describe("GET /employees", () => {
         expect(Array.isArray(response.body)).toBe(true);
     });
 });
+
+describe("POST /employees", () => {
+    it("should create a new employee", async () => {
+        const newEmployee = {
+            name: "John Doe",
+            position: "Software Engineer",
+            salary: 60000
+        };
+
+        const response = await request(app)
+            .post("/employees")
+            .send(newEmployee);
+
+        expect(response.status).toBe(201);
+        expect(response.body).toMatchObject(newEmployee);
+        expect(response.body.id).toBeTypeOf("number");
+    });
+});
