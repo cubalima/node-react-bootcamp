@@ -12,6 +12,28 @@ describe("GET /employees", () => {
     });
 });
 
+describe("GET /employees/:id", () => {
+    it("should retrieve an employee by ID", async () => {
+        const newEmployee = {
+            name: "John Doe",
+            position: "Software Engineer",
+            salary: 60000
+        };
+
+        const createResponse = await request(app)
+            .post("/employees")
+            .send(newEmployee);
+
+        expect(createResponse.status).toBe(201);
+
+        const response = await request(app)
+            .get(`/employees/${createResponse.body.id}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(createResponse.body);
+    });
+});
+
 describe("POST /employees", () => {
     it("should create a new employee without department", async () => {
         const newEmployee = {
