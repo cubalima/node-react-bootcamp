@@ -32,6 +32,37 @@ describe("GET /employees/:id", () => {
         expect(response.status).toBe(200);
         expect(response.body).toEqual(createResponse.body);
     });
+
+    it("should return 404 for a non-existent employee", async () => {
+        const getAllResponse = await request(app)
+            .get("/employees");
+        expect(getAllResponse.status).toBe(200);
+        const maxId = getAllResponse.body.reduce((max: number, emp: { id: number }) => Math.max(max, emp.id), 0);
+
+        const response = await request(app)
+            .get(`/employees/${maxId + 1}`);
+
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty("message", "Employee not found");
+    });
+
+    const invalidIds = [
+        {testName: "zero ID", id: "0"},
+        {testName: "negative ID", id: "-1"},
+        {testName: "decimal ID", id: "1.5"},
+        {testName: "not numeric", id: "1abc"},
+        {testName: "scientific notation", id: "1e2"},
+        {testName: "hexadecimal", id: "0x10"},
+        {testName: "leading zero", id: "01"},
+    ];
+    
+    it.each(invalidIds)("should return 400 for an invalid employee ID: $testName --> $id", async (invalidId) => {
+        const response = await request(app)
+            .get(`/employees/${invalidId.id}`);
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty("message", "Invalid employee ID");
+    });
 });
 
 describe("POST /employees", () => {
