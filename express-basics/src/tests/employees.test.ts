@@ -125,7 +125,6 @@ describe("POST /employees", () => {
     it.each(invalidEmployees)("should return 400 when $testName", async ({ employee }) => {
         const employeesBefore = (await request(app)
             .get("/employees"))
-            .body;
 
         const response = await request(app)
             .post("/employees")
@@ -133,11 +132,10 @@ describe("POST /employees", () => {
 
         const employeesAfter = (await request(app)
             .get("/employees"))
-            .body;
 
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("message", "Invalid employee data");
-        expect(employeesAfter).toEqual(employeesBefore);
+        expect(employeesAfter.body).toEqual(employeesBefore.body);
     });
 });
 
