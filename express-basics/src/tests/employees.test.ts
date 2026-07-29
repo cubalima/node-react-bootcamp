@@ -47,13 +47,13 @@ describe("GET /employees/:id", () => {
     });
 
     const invalidIds = [
-        {testName: "zero ID", id: "0"},
-        {testName: "negative ID", id: "-1"},
-        {testName: "decimal ID", id: "1.5"},
-        {testName: "not numeric", id: "1abc"},
-        {testName: "scientific notation", id: "1e2"},
-        {testName: "hexadecimal", id: "0x10"},
-        {testName: "leading zero", id: "01"},
+        { testName: "zero ID", id: "0" },
+        { testName: "negative ID", id: "-1" },
+        { testName: "decimal ID", id: "1.5" },
+        { testName: "not numeric", id: "1abc" },
+        { testName: "scientific notation", id: "1e2" },
+        { testName: "hexadecimal", id: "0x10" },
+        { testName: "leading zero", id: "01" },
     ];
 
     it.each(invalidIds)("should return 400 for an invalid employee ID: $testName --> $id", async (invalidId) => {
@@ -100,25 +100,25 @@ describe("POST /employees", () => {
     });
 
     const invalidEmployees = [
-        {   
-            testName: "salary is not a number", 
-            employee: { name: "Jane Doe", position: "Software Engineer", salary: "60000" } 
+        {
+            testName: "salary is not a number",
+            employee: { name: "Jane Doe", position: "Software Engineer", salary: "60000" }
         },
-        {   
-            testName: "department is not a string", 
-            employee: { name: "Jane Doe", position: "Software Engineer", department: 123, salary: 60000 } 
+        {
+            testName: "department is not a string",
+            employee: { name: "Jane Doe", position: "Software Engineer", department: 123, salary: 60000 }
         },
-        {   
-            testName: "body contains an unknown field", 
-            employee: { name: "Jane Doe", position: "Software Engineer", salary: 60000, email: "whatever@gmail.com" } 
+        {
+            testName: "body contains an unknown field",
+            employee: { name: "Jane Doe", position: "Software Engineer", salary: 60000, email: "whatever@gmail.com" }
         },
-        {   
-            testName: "name field is missing", 
-            employee: { position: "Software Engineer", salary: 60000 } 
+        {
+            testName: "name field is missing",
+            employee: { position: "Software Engineer", salary: 60000 }
         },
-        {   
-            testName: "body contains an id", 
-            employee: { id: 1, name: "Jane Doe", position: "Software Engineer", salary: 60000 } 
+        {
+            testName: "body contains an id",
+            employee: { id: 1, name: "Jane Doe", position: "Software Engineer", salary: 60000 }
         }
     ];
 
@@ -137,7 +137,7 @@ describe("POST /employees", () => {
 
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("message", "Invalid employee data");
-        expect(employeesAfter).toHaveLength(employeesBefore.length);
+        expect(employeesAfter).toEqual(employeesBefore);
     });
 });
 
