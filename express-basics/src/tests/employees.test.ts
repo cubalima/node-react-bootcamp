@@ -240,4 +240,28 @@ describe("DELETE /employees/:id", () => {
         expect(getResponse.status).toBe(404);
         expect(getResponse.body).toHaveProperty("message", "Employee not found");
     });
+
+    it("should return 404 for a non-existent employee", async () => {
+        const getAllResponse = await request(app)
+            .get("/employees");
+        expect(getAllResponse.status).toBe(200);
+        const maxId = getAllResponse.body.reduce((max: number, emp: { id: number }) => Math.max(max, emp.id), 0);
+
+        const response = await request(app)
+            .delete(`/employees/${maxId + 1}`);
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty("message", "Employee not found");
+
+        const getAllResponseAfter = await request(app)
+            .get("/employees");
+        expect(getAllResponseAfter.status).toBe(200);
+        expect(getAllResponseAfter.body).toEqual(getAllResponse.body);
+    });
+
+    it("should return 400 for an invalid employee ID", async () => {
+        const response = await request(app)
+            .delete("/employees/1abc");
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty("message", "Invalid employee ID");
+    });
 });
