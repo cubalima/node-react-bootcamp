@@ -55,7 +55,7 @@ describe("GET /employees/:id", () => {
         {testName: "hexadecimal", id: "0x10"},
         {testName: "leading zero", id: "01"},
     ];
-    
+
     it.each(invalidIds)("should return 400 for an invalid employee ID: $testName --> $id", async (invalidId) => {
         const response = await request(app)
             .get(`/employees/${invalidId.id}`);
@@ -138,5 +138,37 @@ describe("POST /employees", () => {
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("message", "Invalid employee data");
         expect(employeesAfter).toHaveLength(employeesBefore.length);
+    });
+});
+
+describe("PUT /employees/:id", () => {
+    it("should update an existing employee", async () => {
+        const newEmployee = {
+            name: "John Doe",
+            position: "Software Engineer",
+            salary: 60000
+        };
+
+        const createResponse = await request(app)
+            .post("/employees")
+            .send(newEmployee);
+        expect(createResponse.status).toBe(201);
+
+        const updatedEmployee = {
+            name: "John Doe",
+            position: "Senior Software Engineer",
+            salary: 70000
+        };
+        const updateResponse = await request(app)
+            .put(`/employees/${createResponse.body.id}`)
+            .send(updatedEmployee);
+        expect(updateResponse.status).toBe(200);
+        expect(updateResponse.body).toEqual({ ...updatedEmployee, id: createResponse.body.id });
+
+        const getResponse = await request(app)
+            .get(`/employees/${createResponse.body.id}`);
+
+        expect(getResponse.status).toBe(200);
+        expect(getResponse.body).toEqual(updateResponse.body);
     });
 });
