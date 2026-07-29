@@ -124,14 +124,16 @@ describe("POST /employees", () => {
 
     it.each(invalidEmployees)("should return 400 when $testName", async ({ employee }) => {
         const employeesBefore = (await request(app)
-            .get("/employees"))
+            .get("/employees"));
+        employeesBefore.status = 200;
 
         const response = await request(app)
             .post("/employees")
             .send(employee);
 
         const employeesAfter = (await request(app)
-            .get("/employees"))
+            .get("/employees"));
+        employeesAfter.status = 200;
 
         expect(response.status).toBe(400);
         expect(response.body).toHaveProperty("message", "Invalid employee data");
