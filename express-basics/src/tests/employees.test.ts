@@ -171,4 +171,50 @@ describe("PUT /employees/:id", () => {
         expect(getResponse.status).toBe(200);
         expect(getResponse.body).toEqual(updateResponse.body);
     });
+
+    it("should return 404 for a non-existent employee", async () => {
+        const getAllResponse = await request(app)
+            .get("/employees");
+        expect(getAllResponse.status).toBe(200);
+        const maxId = getAllResponse.body.reduce((max: number, emp: { id: number }) => Math.max(max, emp.id), 0);
+
+        const response = await request(app)
+            .put(`/employees/${maxId + 1}`)
+            .send({ name: "Jane Doe", position: "Software Engineer", salary: 60000 });
+
+        expect(response.status).toBe(404);
+        expect(response.body).toHaveProperty("message", "Employee not found");
+    });
+
+    it("should return 400 for an invalid employee ID", async () => {
+        const response = await request(app)
+            .put("/employees/1abc")
+            .send({ name: "Jane Doe", position: "Software Engineer", salary: 60000 });
+
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty("message", "Invalid employee ID");
+    });
+
+    it("should return 400 for invalid employee data", async () => {
+        const newEmployee = {
+            name: "John Doe",
+            position: "Software Engineer",
+            salary: 60000
+        };
+        const createResponse = await request(app)
+            .post("/employees")
+            .send(newEmployee);
+        expect(createResponse.status).toBe(201);
+
+        const response = await request(app)
+            .put(`/employees/${createResponse.body.id}`)
+            .send({ name: "Jane Doe", position: "Software Engineer", salary: "60000" });
+        expect(response.status).toBe(400);
+        expect(response.body).toHaveProperty("message", "Invalid employee data");
+
+        const getResponse = await request(app)
+            .get(`/employees/${createResponse.body.id}`);
+        expect(getResponse.status).toBe(200);
+        expect(getResponse.body).toEqual(createResponse.body);
+    });
 });
