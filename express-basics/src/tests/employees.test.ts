@@ -218,3 +218,26 @@ describe("PUT /employees/:id", () => {
         expect(getResponse.body).toEqual(createResponse.body);
     });
 });
+
+describe("DELETE /employees/:id", () => {
+    it("should delete an existing employee", async () => {
+        const newEmployee = {
+            name: "John Doe",
+            position: "Software Engineer",
+            salary: 60000
+        };
+        const createResponse = await request(app)
+            .post("/employees")
+            .send(newEmployee);
+        expect(createResponse.status).toBe(201);
+        const deleteResponse = await request(app)
+            .delete(`/employees/${createResponse.body.id}`);
+        expect(deleteResponse.status).toBe(204);
+        expect(deleteResponse.text).toBe("");
+
+        const getResponse = await request(app)
+            .get(`/employees/${createResponse.body.id}`);
+        expect(getResponse.status).toBe(404);
+        expect(getResponse.body).toHaveProperty("message", "Employee not found");
+    });
+});
